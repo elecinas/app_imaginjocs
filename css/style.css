@@ -1,0 +1,22 @@
+body{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+a, a:hover {
+    text-decoration: none !important;
+}
+
+nav div div div p a{
+    color: white;
+}
+
+nav div div div p a:hover{
+    color: rgba(255, 255, 255, .6);
+}
+
+.form-login-container{
+    min-width: 30rem;
+    max-width: 30rem;
+}

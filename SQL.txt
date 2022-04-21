@@ -1,0 +1,84 @@
+/* php artisan migrate:fresh --seed */
+/* my SQL version! :D */
+
+
+/* creación tablas */
+
+CREATE TABLE suppliers (
+    id INTEGER NOT NULL UNIQUE AUTO_INCREMENT,
+    name VARCHAR(150) NOT NULL,
+    phone VARCHAR(15) NOT NULL,
+    email VARCHAR(255),
+    nif VARCHAR(9) NOT NULL,
+    address VARCHAR(255),
+    logo VARCHAR(255),
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE products (
+    id INTEGER NOT NULL UNIQUE AUTO_INCREMENT,
+    name VARCHAR(150) NOT NULL,
+    code VARCHAR(13) NOT NULL UNIQUE,
+    cost DECIMAL(10,2) NOT NULL,
+    iva ENUM('21', '10', '4', '0') NOT NULL,
+    stock SMALLINT NOT NULL,
+    image VARCHAR(255),
+    current_supplier_id INTEGER NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (current_supplier_id) REFERENCES suppliers (id)
+);
+
+CREATE TABLE product_supplier (
+    id INTEGER NOT NULL UNIQUE AUTO_INCREMENT,
+    order_date DATE,
+    product_quantity SMALLINT NOT NULL,
+    supplier_id INTEGER NOT NULL,
+    product_id INTEGER NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (supplier_id) REFERENCES suppliers (id),
+    FOREIGN KEY (product_id) REFERENCES products (id)
+);
+
+CREATE TABLE users (
+    id INTEGER NOT NULL UNIQUE AUTO_INCREMENT,
+    name VARCHAR(150) NOT NULL,
+    email VARCHAR(150) NOT NULL UNIQUE,
+    password VARCHAR(150) NOT NULL,
+    is_admin BIT NOT NULL,
+    PRIMARY KEY (id)
+);
+
+/* inserción de datos de prueba */
+
+INSERT INTO suppliers (name, phone, email, nif, address, logo)
+VALUES 
+('Factoria de ideas', '+34 699 699 699', 'factoria.ideas@email.com', '69696996R', 'Avda. Morramen, 5. 08080', 'http://roleropedia.com/images/3/32/Logotipo-La-Factoria-de-Ideas.jpg'),
+('TCG Factory', '+34 400 112 005', 'tcgfactory@email.com', '11220230Q', 'C/ Pinrel, 1. 08023', 'https://tcgfactory.com/img/tcgfactory-logo-1550881257.jpg'),
+('Jugaia', '+34 121 999 127', 'jugaia@email.com', '99445163H', 'C/ Fregados, nº 14. CP: 08010', 'https://www.jugaia.com/themes/jugaia/assets/img/LOGO-CAST.png');
+
+INSERT INTO products (name, code, cost, iva, stock, image, current_supplier_id)
+VALUES 
+('Catan', '463098', '9.99', '21', 45, 'https://m.media-amazon.com/images/I/61glTil83nS._AC_SY355_.jpg', 2),
+('Sushi Go!', '463099', '19.95', '21', 72, 'https://www.feran.es/img/juego/EAN_8436017221855-6.jpg', 2),
+('Aquelarre', '463100', '59.90', '4', 3, 'https://www.nosolorol.com/22-thickbox_default/aquelarre.jpg', 1),
+('Uno', '9781234567897', '12.99', '21', 55, 'https://www.r4u.es/WebRoot/StoreES3/Shops/79495898/56E7/EB2E/4713/3D42/03AE/C0A8/2AB9/A84E/UNO.jpg', 3),
+('Vampiro: La mascarada', '9781234567800', '73.99', '4', 23, 'https://www.nosolorol.com/1381/vampiro-la-mascarada-5-edicion.jpg', 1);
+
+INSERT INTO product_supplier (order_date, product_quantity, supplier_id, product_id)
+VALUES 
+('2021/11/09', 6, 2, 1),
+('2021/10/11', 6, 3, 2);
+
+
+/* consultas select para index.php */
+
+SELECT * FROM products;
+
+SELECT * FROM suppliers;
+
+SELECT p.name, s.name, ps.product_quantity, ps.order_date
+FROM products p
+JOIN product_supplier ps
+    ON p.id = ps.product_id
+JOIN suppliers s 
+    ON s.id =ps.supplier_id;
