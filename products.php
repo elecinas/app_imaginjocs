@@ -58,7 +58,7 @@ if (isset($_SESSION['user_email']) && $_SESSION['user_is_admin'] == 0) {
                                     </div>
                                     <!-- input cost -->
                                     <div class="form-group">
-                                        <label for="cost">Codi ISBN</label>
+                                        <label for="cost">Preu</label>
                                         <input type="text" name="cost" class="form-control" placeholder="9.99">
                                     </div>
                                     <!-- input iva -->
@@ -89,7 +89,7 @@ if (isset($_SESSION['user_email']) && $_SESSION['user_is_admin'] == 0) {
                                     </div>
                                     <!-- input image -->
                                     <div class="form-group">
-                                        <label for="image">Codi ISBN</label>
+                                        <label for="image">Imatge</label>
                                         <input type="text" name="image" class="form-control" placeholder="https://www.nosolorol.com/22-thickbox_default/aquelarre.jpg">
                                     </div>
                                     <button type="submit" class="btn btn-success">Introduïr producte</button>
